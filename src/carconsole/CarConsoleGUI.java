@@ -1,4 +1,4 @@
-package CarConsole;
+package carconsole;
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -6,10 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import static javafx.application.Application.launch;
 
-public class CarConsole extends Application {
+public class CarConsoleGUI extends Application {
     
     @Override
     public void start(Stage primaryStage) {
@@ -33,6 +35,7 @@ public class CarConsole extends Application {
         //TODO: build media player for center panel
         
         powerBtn.setText("Power");
+        //powerBtn.setGraphic(new ImageView("cat.jpg"));
         powerBtn.setOnAction((ActionEvent event) -> {
             System.out.println("Power Button");
             //TODO: send power signal to Ardulink
@@ -123,7 +126,7 @@ public class CarConsole extends Application {
 	root.setLeft(leftPanel);
 	root.setRight(rightPanel);
 	//TODO: what to add to the center panel... media player?
-	//root.setCenter(?????);
+	root.setCenter(new ImageView("cat.jpg"));
 
 	
  	Scene scene = new Scene(root);
