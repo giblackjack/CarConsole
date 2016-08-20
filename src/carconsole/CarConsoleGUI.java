@@ -10,6 +10,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import static javafx.application.Application.launch;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.shape.Cylinder;
 
 public class CarConsoleGUI extends Application {
     
@@ -17,86 +20,97 @@ public class CarConsoleGUI extends Application {
     public void start(Stage primaryStage) {
 
 	//TODO: Construct various buttons for control of A/C
+        ToggleGroup airGroup = new ToggleGroup();
+        ToggleGroup ventGroup = new ToggleGroup();
+        
         Button powerBtn = new Button();
-        Button insideAir = new Button();
-        Button outsideAir = new Button();
-        Button compressor = new Button();
+        ToggleButton insideAir = new ToggleButton();
+        insideAir.setToggleGroup(airGroup);
+        ToggleButton outsideAir = new ToggleButton();
+        outsideAir.setToggleGroup(airGroup);
+        ToggleButton compressor = new ToggleButton();
         Button fanUp = new Button();
         Button fanDown = new Button();
         Button colder = new Button();
         Button warmer = new Button();
-        Button faceVent = new Button();
-        Button faceFeetVent = new Button();
-        Button feetVent = new Button();
-        Button feetWindowVent = new Button();
-        Button windowVent = new Button();
+        ToggleButton faceVent = new ToggleButton();
+        faceVent.setToggleGroup(ventGroup);
+        ToggleButton faceFeetVent = new ToggleButton();
+        faceFeetVent.setToggleGroup(ventGroup);
+        ToggleButton feetVent = new ToggleButton();
+        feetVent.setToggleGroup(ventGroup);
+        ToggleButton feetWindowVent = new ToggleButton();
+        feetWindowVent.setToggleGroup(ventGroup);
+        ToggleButton windowVent = new ToggleButton();
+        windowVent.setToggleGroup(ventGroup);
+        
+        
         
         //TODO: build clock for panel
         //TODO: build media player for center panel
         
-        powerBtn.setText("Power");
-        //powerBtn.setGraphic(new ImageView("cat.jpg"));
+        powerBtn.setGraphic(new ImageView("power.png"));
         powerBtn.setOnAction((ActionEvent event) -> {
             System.out.println("Power Button");
             //TODO: send power signal to Ardulink
         });
         
-        insideAir.setText("ReCirculate");
+        insideAir.setGraphic(new ImageView("in-air.png"));
         insideAir.setOnAction((ActionEvent event) ->{
            System.out.println("Recirculate"); 
         });
         
-        outsideAir.setText("Fresh Air");
+        outsideAir.setGraphic(new ImageView("out-air.png"));
         outsideAir.setOnAction((ActionEvent event) ->{
            System.out.println("Fresh Air"); 
         });
         
-        compressor.setText("compressor");
+        compressor.setGraphic(new ImageView("ac.png"));
         compressor.setOnAction((ActionEvent event) ->{
-           System.out.println("compressor"); 
+           System.out.println("compressor");
         });
  
-        fanUp.setText("Fan Up");
+        fanUp.setGraphic(new ImageView("fan2.png"));
         fanUp.setOnAction((ActionEvent event) ->{
            System.out.println("Fan Up"); 
         });
         
-        fanDown.setText("fan down");
+        fanDown.setGraphic(new ImageView("fan1.png"));
         fanDown.setOnAction((ActionEvent event) ->{
            System.out.println("fan down"); 
         });
         
-        colder.setText("colder");
+        colder.setGraphic(new ImageView("cold.png"));
         colder.setOnAction((ActionEvent event) ->{
            System.out.println("colder"); 
         });
         
-        warmer.setText("warmer");
+        warmer.setGraphic(new ImageView("hot.png"));
         warmer.setOnAction((ActionEvent event) ->{
            System.out.println("warmer"); 
         });
         
-        faceVent.setText("faceVent");
+        faceVent.setGraphic(new ImageView("face.png"));
         faceVent.setOnAction((ActionEvent event) ->{
            System.out.println("faceVent"); 
         });
         
-        faceFeetVent.setText("faceFeetVent");
+        faceFeetVent.setGraphic(new ImageView("face_feet.png"));
         faceFeetVent.setOnAction((ActionEvent event) ->{
            System.out.println("faceFeetVent"); 
         });
         
-        feetVent.setText("feetVent");
+        feetVent.setGraphic(new ImageView("feet.png"));
         feetVent.setOnAction((ActionEvent event) ->{
            System.out.println("feetVent"); 
         });
         
-        feetWindowVent.setText("feetWindowVent");
+        feetWindowVent.setGraphic(new ImageView("feet_windows.png"));
         feetWindowVent.setOnAction((ActionEvent event) ->{
            System.out.println("feetWindowVent"); 
         });
         
-        windowVent.setText("windowVent");
+        windowVent.setGraphic(new ImageView("windows.png"));
         windowVent.setOnAction((ActionEvent event) ->{
            System.out.println("windowVent"); 
         });
@@ -109,7 +123,7 @@ public class CarConsoleGUI extends Application {
 	VBox rightPanel = new VBox(2);
         
 	//add buttons to various panel components
-	topPanel.getChildren().addAll(insideAir, outsideAir, compressor);
+	topPanel.getChildren().addAll(compressor, insideAir, outsideAir);
 	bottomPanel.getChildren().addAll(faceVent, faceFeetVent, feetVent, feetWindowVent, windowVent, powerBtn);
 	leftPanel.getChildren().addAll(fanUp, fanDown);
 	rightPanel.getChildren().addAll(warmer, colder);
@@ -126,8 +140,8 @@ public class CarConsoleGUI extends Application {
 	root.setLeft(leftPanel);
 	root.setRight(rightPanel);
 	//TODO: what to add to the center panel... media player?
-	root.setCenter(new ImageView("cat.jpg"));
-
+	//root.setCenter(new Cylinder(64D, 128D));
+        
 	
  	Scene scene = new Scene(root);
 
