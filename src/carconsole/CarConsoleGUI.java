@@ -10,15 +10,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import static javafx.application.Application.launch;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.shape.Cylinder;
 
 public class CarConsoleGUI extends Application {
-    
+    private AirConditionerControlModule CModule;
+    private Label connectedLabel = new Label();
     @Override
     public void start(Stage primaryStage) {
-
+        CModule = new AirConditionerControlModule(this);
+        
 	//TODO: Construct various buttons for control of A/C
         ToggleGroup airGroup = new ToggleGroup();
         ToggleGroup ventGroup = new ToggleGroup();
@@ -52,22 +55,29 @@ public class CarConsoleGUI extends Application {
         powerBtn.setGraphic(new ImageView("power.png"));
         powerBtn.setOnAction((ActionEvent event) -> {
             System.out.println("Power Button");
-            //TODO: send power signal to Ardulink
+            CModule.sendInstructions("999");
         });
         
         insideAir.setGraphic(new ImageView("in-air.png"));
         insideAir.setOnAction((ActionEvent event) ->{
            System.out.println("Recirculate"); 
+           CModule.sendInstructions("196");
         });
         
         outsideAir.setGraphic(new ImageView("out-air.png"));
         outsideAir.setOnAction((ActionEvent event) ->{
            System.out.println("Fresh Air"); 
+           CModule.sendInstructions("197");
         });
         
         compressor.setGraphic(new ImageView("ac.png"));
         compressor.setOnAction((ActionEvent event) ->{
            System.out.println("compressor");
+           if(compressor.isSelected()){
+               CModule.sendInstructions("199");
+           } else {
+               CModule.sendInstructions("198");
+           }
         });
  
         fanUp.setGraphic(new ImageView("fan2.png"));
@@ -123,7 +133,7 @@ public class CarConsoleGUI extends Application {
 	VBox rightPanel = new VBox(2);
         
 	//add buttons to various panel components
-	topPanel.getChildren().addAll(compressor, insideAir, outsideAir);
+	topPanel.getChildren().addAll(compressor, insideAir, outsideAir, connectedLabel);
 	bottomPanel.getChildren().addAll(faceVent, faceFeetVent, feetVent, feetWindowVent, windowVent, powerBtn);
 	leftPanel.getChildren().addAll(fanUp, fanDown);
 	rightPanel.getChildren().addAll(warmer, colder);
@@ -140,7 +150,7 @@ public class CarConsoleGUI extends Application {
 	root.setLeft(leftPanel);
 	root.setRight(rightPanel);
 	//TODO: what to add to the center panel... media player?
-	//root.setCenter(new Cylinder(64D, 128D));
+	//root.setCenter(new ImageView("cat.jpg"));
         
 	
  	Scene scene = new Scene(root);
@@ -153,5 +163,34 @@ public class CarConsoleGUI extends Application {
  public static void main(String[] args) {
         launch(args);
     }
+
+    void boardConnected(boolean connected) {
+        connectedLabel.setText("Is Connected: " + connected);
+    }
 }
 
+/*
+Code	Arduino pin	Action
+999	--	Close all output pins
+Servo		
+10-90	5	Control servo angle 0-90 deg.
+Vents		
+190	6	Face vent
+191	7	Face and feet vents
+192	8	Feet vent
+193	9	Feet and windows vents
+194	10	Windows vents
+195	--	All vents offs
+Airflow		
+196	11	Circulate air inside
+197	12	Circulate air from outside
+AC		
+198	13	AC on
+199	--	AC off
+Fan		
+300		Fan Off. AC Off
+325	A1	Fan speed 1 (min)
+350	A2	Fan speed 2
+375	A3	Fan speed 3
+400	A4	Fan speed 4 (max)
+*/

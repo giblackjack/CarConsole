@@ -5,14 +5,39 @@
  */
 package carconsole;
 
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.zu.ardulink.*;
 /**
  *
  * @author STIVY
  */
 public class AirConditionerControlModule {
+
+    private final Link boardLink;
     
-    public AirConditionerControlModule(){
-        
+    public AirConditionerControlModule(CarConsoleGUI parent) {
+        this.boardLink = Link.getDefaultInstance();
+        /*List<String> portList = boardLink.getPortList(); // 2
+        if (portList != null && portList.size() > 0) {
+            String port = portList.get(0);
+            System.out.println("Connecting on port: " + port);
+            boolean connected = boardLink.connect(port); // 3
+            System.out.println("Connected:" + connected);
+            try {
+                Thread.sleep(2000); // 4
+            } catch (InterruptedException ex) {
+                Logger.getLogger(AirConditionerControlModule.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }*/
+
+         parent.boardConnected(boardLink.isConnected());
+        }
+    
+    protected void sendInstructions(String message){
+        //boardLink.sendCustomMessage(message);
+        System.out.println(message);
     }
     
 }
